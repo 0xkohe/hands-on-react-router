@@ -96,7 +96,11 @@ app/routes/
 - **Underscore prefix** (`_index`, `_auth`): Used for special routes
   - `_index/` → Root path `/`
   - `_auth.*` → Authentication routes
-- **Layout routes**: A file like `user.tsx` can serve as a layout for nested `user.*` routes
+- **Layout routes**: Files like `admin.tsx`, `user.tsx`, `tenant.tsx` serve as layout components for their respective nested routes
+  - `admin.tsx` → Layout for all `admin.*` routes (e.g., `admin.dashboard`, `admin.users`)
+  - `user.tsx` → Layout for all `user.*` routes (e.g., `user.profile`, `user.settings`)
+  - `tenant.tsx` → Layout for all `tenant.*` routes (e.g., `tenant.jobs`, `tenant.settings`)
+  - **Navigation implementation**: These layout files are where you implement navigation bars, sidebars, and other shared UI components for each user role
 - **Dynamic segments**: Use `$param` syntax (e.g., `jobs.$id/route.tsx` → `/jobs/:id`)
 
 ## Project Overview
@@ -161,8 +165,11 @@ app/
     ├── _auth.admin.login/     # Admin authentication
     ├── _auth.client.login/    # Client authentication
     ├── _index/                # Landing page
+    ├── admin.tsx              # Layout for admin.* routes (navigation bar, etc.)
     ├── admin.*/               # Admin panel routes
+    ├── tenant.tsx             # Layout for tenant.* routes (navigation bar, etc.)
     ├── tenant.*/              # Company/tenant routes
+    ├── user.tsx               # Layout for user.* routes (navigation bar, etc.)
     ├── user.*/                # User/candidate routes
     └── home/                  # Home page
 ```
@@ -195,7 +202,7 @@ app/
 
 - **⚠️ Shared files - AVOID BY DEFAULT**: **Do NOT use shared locations unless absolutely necessary**. Only move files to shared locations in exceptional cases when code is genuinely reused across **3 or more** different routes and there's a clear business justification:
   - `app/components/` - Components used in multiple routes (avoid by default)
-    - **Exception**: Navigation components (Header, Sidebar, etc.) can be shared as they are used across multiple layouts
+    - **Exception**: Navigation components are typically implemented in layout routes (`admin.tsx`, `user.tsx`, `tenant.tsx`) rather than shared components
   - `app/lib/` - Shared utility functions and libraries (avoid by default)
   - `app/types/` - Shared type definitions (avoid by default)
   - `app/hooks/` - Shared custom hooks (avoid by default)
