@@ -11,6 +11,7 @@ echo "Installing GitHub Copilot CLI..."
 npm install -g @github/copilot
 
 echo "Installing Supabase CLI..."
-npm install -g supabase
+brew install supabase/tap/supabase
+
 
 echo "Setup complete!"
