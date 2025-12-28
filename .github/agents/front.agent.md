@@ -110,6 +110,20 @@ This is a React Router v7 job board application built with TypeScript and Vite. 
 - **Styling**: TailwindCSS v4 with Vite plugin
 - **TypeScript**: Strict mode enabled with path aliases (`~/*` maps to `./app/*`)
 - **Mode**: **SPA Mode** (Single Page Application) - Server-side features like `loader` and `action` are NOT available
+- **Design**: Modern, clean, and responsive UI design following contemporary design principles
+
+## Modern Design Guidelines
+
+**IMPORTANT**: Follow modern design principles when implementing UI components:
+
+- **Clean and Minimal**: Use clean layouts with plenty of white space
+- **Responsive Design**: Ensure all components work seamlessly across desktop, tablet, and mobile devices
+- **Consistent Typography**: Use consistent font sizes, weights, and spacing throughout the application
+- **Color System**: Maintain a consistent color palette using TailwindCSS design tokens
+- **Interactive Elements**: Implement smooth hover effects, transitions, and focus states
+- **Accessibility**: Follow WCAG guidelines for contrast, keyboard navigation, and screen reader compatibility
+- **Component Consistency**: Ensure similar components have consistent styling and behavior
+- **Loading States**: Implement proper loading indicators and skeleton screens for better UX
 
 ## Common Commands
 
@@ -181,6 +195,7 @@ app/
 
 - **⚠️ Shared files - AVOID BY DEFAULT**: **Do NOT use shared locations unless absolutely necessary**. Only move files to shared locations in exceptional cases when code is genuinely reused across **3 or more** different routes and there's a clear business justification:
   - `app/components/` - Components used in multiple routes (avoid by default)
+    - **Exception**: Navigation components (Header, Sidebar, etc.) can be shared as they are used across multiple layouts
   - `app/lib/` - Shared utility functions and libraries (avoid by default)
   - `app/types/` - Shared type definitions (avoid by default)
   - `app/hooks/` - Shared custom hooks (avoid by default)
