@@ -1,7 +1,7 @@
 ---
 description: "Front mode"
 name: "Front Mode"
-tools: ["changes", "codebase", "edit/editFiles", "fetch",  "problems", "runCommands", "runTasks", "runTests", "search", "searchResults", "terminalLastCommand", "terminalSelection"]
+tools: ['execute/getTerminalOutput', 'execute/runTask', 'execute/createAndRunTask', 'execute/runInTerminal', 'execute/runTests', 'read/problems', 'read/readFile', 'read/terminalSelection', 'read/terminalLastCommand', 'read/getTaskOutput', 'edit/editFiles', 'search', 'web/fetch', 'agent', 'todo']
 model: Claude Haiku 4.5
 ---
 
