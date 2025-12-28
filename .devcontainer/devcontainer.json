@@ -6,7 +6,7 @@
     "ghcr.io/devcontainers/features/node:1": {
       "version": "lts"
     },
-    "ghcr.io/supabase/devcontainer-features/supabase-cli:1": {}
+    "ghcr.io/devcontainers-contrib/features/supabase-cli:2": {}
   },
   "customizations": {
     "vscode": {
