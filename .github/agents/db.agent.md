@@ -16,7 +16,8 @@ This file provides guidance for designing database tables from frontend UI imple
 1. **NEVER create or modify database tables without a plan**
 2. **ALWAYS create a detailed design plan document first**
 3. **ALWAYS get explicit user approval before implementation**
-4. **Document all design decisions and alternatives**
+4. **ALWAYS run `supabase db diff` after placing SQL files and before migrations**
+5. **Document all design decisions and alternatives**
 
 See [Database Design Planning Process](#database-design-planning-process) section for the complete workflow.
 
@@ -297,17 +298,38 @@ supabase/schemas/
 
 ### When Modifying the Database Schema
 
-1. **Update the appropriate SQL file** in the corresponding directory
-2. **Run migrations** via Supabase CLI:
+1. **Create/Update SQL files** in the appropriate `supabase/schemas/` directory
+   - Place files in the correct subdirectory (00_setup through 07_indexes)
+   - Follow naming conventions and organization guidelines
+
+2. **Validate schema with `supabase db diff`**:
+   ```bash
+   supabase db diff
+   ```
+   - This command checks for syntax errors and conflicts
+   - **IMPORTANT**: Fix any errors before proceeding
+   - If errors occur:
+     - Review the SQL syntax
+     - Check for missing dependencies (tables, types, functions)
+     - Ensure proper execution order
+     - Verify foreign key references exist
+
+3. **Run migrations** via Supabase CLI (only after diff validation succeeds):
    ```bash
    supabase db reset --local
-   # or
+   # or create a new migration
    supabase migration new your_migration_name
    ```
-3. **Regenerate TypeScript types**:
+
+4. **Regenerate TypeScript types**:
    ```bash
    supabase gen types typescript --local > app/database.types.ts
    ```
+
+5. **Verify the migration**:
+   - Check that tables were created correctly
+   - Test RLS policies with different user roles
+   - Verify indexes are in place
 
 ## Common Database Patterns
 
@@ -609,13 +631,23 @@ If your application is **not multi-tenant** (single organization or personal use
 - `updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()`
 - `deleted_at TIMESTAMP WITH TIME ZONE` (if using soft deletes)
 
-### 5. Optimize for Queries
+### 5. Always Validate with `supabase db diff`
+- **Run `supabase db diff` after placing SQL files** in schemas directory
+- Fix all errors before running migrations
+- Never skip this validation step
+- Common issues caught by diff:
+  - SQL syntax errors
+  - Missing table/type dependencies
+  - Invalid foreign key references
+  - Circular dependencies
+
+### 6. Optimize for Queries
 - Add indexes for foreign keys
 - Add indexes for commonly filtered/sorted columns
 - Use composite indexes for multi-column queries
 - Monitor query performance and add indexes as needed
 
-### 6. Document Your Schema
+### 7. Document Your Schema
 - Add comments to tables and columns
 - Document complex relationships
 - Explain business logic in function comments
@@ -711,10 +743,13 @@ If your application is **not multi-tenant** (single organization or personal use
    - Revise plan based on feedback
 
 5. **Implementation (Only After Approval)**
-   - Create SQL files in `supabase/schemas/` directories
+   - Create SQL files in appropriate `supabase/schemas/` directories
    - Implement tables, policies, indexes as planned
-   - Run migrations
+   - **Run `supabase db diff`** to validate schema changes
+   - Fix any errors reported by diff command
+   - Run migrations (only after successful validation)
    - Regenerate TypeScript types
+   - Verify the implementation
 
 ### Planning Checklist
 
@@ -730,6 +765,20 @@ Before presenting a plan to the user, ensure:
 - [ ] Foundation tables (users, tenants, etc.) are included if needed
 - [ ] SQL syntax is correct and follows Supabase conventions
 
+### Implementation Checklist
+
+After user approval, during implementation:
+
+- [ ] SQL files created in correct `supabase/schemas/` subdirectories
+- [ ] Files follow the naming conventions
+- [ ] Tables include all standard fields (id, timestamps)
+- [ ] RLS is enabled on all tables
+- [ ] **Run `supabase db diff` to validate**
+- [ ] All errors from diff command are fixed
+- [ ] Migrations run successfully
+- [ ] TypeScript types regenerated
+- [ ] Access patterns tested for each role
+
 ## Workflow Summary
 
 1. **Start with foundation tables** (users, admin_users, tenants, tenant_staffs)
@@ -742,7 +791,12 @@ Before presenting a plan to the user, ensure:
 8. **Create SQL files** in appropriate `supabase/schemas/` directories (only after approval)
 9. **Define RLS policies** based on user roles
 10. **Add indexes** for performance
-11. **Run migrations** and regenerate types
-12. **Test access patterns** for each role
+11. **✅ VALIDATE with `supabase db diff`** - Check for syntax errors and conflicts
+12. **Fix any errors** identified by the diff command
+13. **Run migrations** - Apply the schema changes
+14. **Regenerate TypeScript types** - Update app/database.types.ts
+15. **Test access patterns** for each role
 
-**Remember**: Steps 8-12 should ONLY be executed after receiving user approval in step 7.
+**Remember**: Steps 8-15 should ONLY be executed after receiving user approval in step 7.
+
+**Critical Validation Step**: Step 11 (`supabase db diff`) is mandatory before running migrations. Never skip this validation step.
