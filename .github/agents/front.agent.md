@@ -165,7 +165,7 @@ app/
 
 **IMPORTANT**: When creating new components, hooks, utilities, or types, always organize them within the target folder structure:
 
-- **Route-specific files**: Create subdirectories within the route folder for better organization:
+- **Route-specific files**: **ALWAYS prefer this approach** - Create subdirectories within the route folder for better organization:
   ```
   app/routes/[route-name]/
   ├── route.tsx              # Main route component
@@ -179,17 +179,21 @@ app/
       └── helpers.ts
   ```
 
-- **Shared files**: Only move files to shared locations when they are genuinely reused across multiple features:
-  - `app/components/` - Components used in multiple routes
-  - `app/lib/` - Shared utility functions and libraries
-  - `app/types/` - Shared type definitions
-  - `app/hooks/` - Shared custom hooks
+- **⚠️ Shared files - AVOID BY DEFAULT**: **Do NOT use shared locations unless absolutely necessary**. Only move files to shared locations in exceptional cases when code is genuinely reused across **3 or more** different routes and there's a clear business justification:
+  - `app/components/` - Components used in multiple routes (avoid by default)
+  - `app/lib/` - Shared utility functions and libraries (avoid by default)
+  - `app/types/` - Shared type definitions (avoid by default)
+  - `app/hooks/` - Shared custom hooks (avoid by default)
 
-- **Benefits of this approach**:
+- **Principle**: **Prefer duplication over premature abstraction**. Even if code looks similar, keep it within each route folder until there's a proven need for sharing.
+
+- **Benefits of this route-specific approach**:
   - Clear dependencies and ownership
   - Easier to find and maintain related code
   - Reduces coupling between features
   - Makes refactoring safer and more predictable
+  - Avoids premature abstraction
+  - Each route is self-contained and independent
 
 ### File Size Management
 
