@@ -1,7 +1,7 @@
 ---
 description: "Front mode"
 name: "Front Mode"
-tools: ['execute', 'read', 'edit', 'search', 'web/fetch', 'agent', 'todo']
+tools: ['execute', 'read', 'agent', 'todo']
 model: Claude Haiku 4.5
 ---
 
@@ -46,14 +46,25 @@ Each folder must contain a `route.tsx` file to be a valid route.
 
 ### Creating New Pages
 
+**IMPORTANT**: Before implementing any new pages, you MUST:
+
+1. **Generate path list and functionality overview** for all pages to be created
+2. **Present this list to the user for confirmation** before proceeding with any implementation
+3. **Wait for explicit user approval** before starting the actual implementation
+
 Follow these steps when creating a new page:
 
-1. **Create a folder** with the desired path using dots for segments:
+1. **First, create and present a comprehensive plan**:
+   - List all paths/routes that will be created (e.g., `/user/profile`, `/tenant/jobs/new`)
+   - Describe the functionality and purpose of each page
+   - Present this to the user for review and confirmation
+
+2. **After user confirmation, create a folder** with the desired path using dots for segments:
    ```
    app/routes/user.aaa/
    ```
 
-2. **Add a `route.tsx` file** inside:
+3. **Add a `route.tsx` file** inside:
    ```tsx
    // app/routes/user.aaa/route.tsx
    import type { Route } from "./+types/user.aaa";
@@ -75,7 +86,7 @@ Follow these steps when creating a new page:
    }
    ```
 
-3. **TypeScript types** are automatically generated in `.react-router/types/`
+4. **TypeScript types** are automatically generated in `.react-router/types/`
 
 ### Example Route Structure
 
