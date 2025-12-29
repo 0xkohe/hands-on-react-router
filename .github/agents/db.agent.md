@@ -255,46 +255,56 @@ supabase/schemas/
 
 ### Schema Organization Guidelines
 
+**⚠️ IMPORTANT**: Always use numeric prefixes for SQL files to ensure proper execution order and prevent dependency errors.
+
 **00_setup/** - Foundation
 - Database extensions (uuid-ossp, pgcrypto, pg_trgm for full-text search)
 - Initial configuration
 - Run first
+- **File examples**: `00_extensions.sql`, `01_configuration.sql`
 
 **01_types/** - Enums and Custom Types
 - Define all ENUM types here
 - Custom composite types
 - Run before tables
+- **File examples**: `00_enums.sql`, `01_composite_types.sql`
 
 **02_tables/** - Core Data Structure
 - One file per table or related group of tables
 - Include primary keys, foreign keys, constraints
 - Order files by dependencies (parent tables before child tables)
+- **File examples**: `00_users.sql`, `01_tenants.sql`, `02_tenant_staffs.sql`, `03_exams.sql`, `04_assignments.sql`
 
 **03_functions/** - Business Logic
 - Stored procedures
 - Helper functions
 - Complex calculations
+- **File examples**: `00_helpers.sql`, `01_calculations.sql`, `02_validators.sql`
 
 **04_policies/** - Security
 - Row Level Security policies for each table
 - One file per table recommended
 - Define policies for admin, tenant, and user roles
+- **File examples**: `00_users_policies.sql`, `01_tenants_policies.sql`, `02_exams_policies.sql`
 
 **05_views/** - Query Optimization
 - Materialized views for complex queries
 - Regular views for commonly used joins
 - Reporting views
+- **File examples**: `00_analytics.sql`, `01_reporting.sql`, `02_aggregates.sql`
 
 **06_triggers/** - Automation
 - Auto-update timestamps (updated_at)
 - Audit logging
 - Data validation
+- **File examples**: `00_timestamps.sql`, `01_audit_logging.sql`, `02_validation.sql`
 
 **07_indexes/** - Performance
 - Single-column indexes for foreign keys
 - Composite indexes for common query patterns
 - Full-text search indexes (GIN)
 - Run last
+- **File examples**: `00_basic_indexes.sql`, `01_composite_indexes.sql`, `02_fulltext_indexes.sql`
 
 ### When Modifying the Database Schema
 
